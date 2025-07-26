@@ -7,6 +7,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .detection_model import detect_and_estimate_distance
 
+import os
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser
+from ultralytics import YOLO
+from PIL import Image
+import tempfile
+
 @csrf_exempt
 def analyze_image(request):
     if request.method == 'POST' and request.FILES.get('image'):
@@ -19,16 +27,9 @@ def analyze_image(request):
 
     return JsonResponse({'error': 'Image non reçue'}, status=400)
 
-import os
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser
-from ultralytics import YOLO
-from PIL import Image
-import tempfile
 
-# Charger le modèle YOLOv8
-model = YOLO("yolov8n.pt")  # Utilise un modèle pré-entraîné
+
+model = YOLO("yolov8n.pt") 
 
 class YoloDetectionView(APIView):
     parser_classes = [MultiPartParser]
@@ -45,7 +46,7 @@ class YoloDetectionView(APIView):
             image_path = temp_image.name
 
         # Détection avec YOLO
-        results = model(image_path)[0]  # On prend la première image traitée
+        results = model(image_path)[0] 
 
         # Formatage des résultats
         predictions = []
@@ -53,14 +54,13 @@ class YoloDetectionView(APIView):
             class_id = int(box.cls[0])
             label = model.names[class_id]
             confidence = float(box.conf[0])
-            coords = box.xyxy[0].tolist()  # [x1, y1, x2, y2]
+            coords = box.xyxy[0].tolist()
             predictions.append({
                 "label": label,
                 "confidence": round(confidence, 2),
                 "bbox": [round(c, 2) for c in coords]
             })
-
-        # Nettoyage
+            
         os.remove(image_path)
 
         return Response({"detections": predictions})
