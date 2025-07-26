@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>API de Détection - Auris</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        code {
+            background: #eee;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background: #f0f0f0;
+            padding: 1rem;
+            border-left: 4px solid #3498db;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenue sur l’API de Détection d’Auris</h1>
+
+    <p>Cette API vous permet d’envoyer une image et d’obtenir une détection en retour à l’aide de YOLOv8.</p>
+
+    <h2>Endpoint principal</h2>
+    <p><code>POST /api/detect/</code></p>
+
+    <h2>Comment l’utiliser</h2>
+    <h2>🔧 Comment utiliser l'API ?</h2>
+    <p>URL de l'API : <code>http://<votre-ip>:8000/api/detect/</code></p>
+    <p>Méthode : <code>POST</code> (multipart/form-data)</p>
+    <p>Paramètre requis : <code>image</code> (fichier image à analyser)</p>
+
+
+    <h3>Exemple en Python avec <code>requests</code></h3>
+    <pre><code>import requests
+
+url = "http://127.0.0.1:8000/api/detect/"
+files = {'image': open('url_de_l'image/mon_image.jpg', 'rb')}
+response = requests.post(url, files=files)
+
+print(response.json())</code></pre>
+
+    <h2>Réponse</h2>
+    <p>La réponse sera un JSON contenant les objets détectés avec leurs coordonnées :</p>
+    <pre><code>{
+  "detections": [
+    {
+      "label": "person",
+      "confidence": 0.89,
+      "box": [x, y, width, height]
+    },
+    ...
+  ]
+}</code></pre>
+
+ <h2>Exemple Flutter (Dart)</h2>
+    <pre><code class="language-dart">
+import 'package:http/http.dart' as http;
+import 'dart:io';
+
+Future<void> detectObject(File imageFile) async {
+  var request = http.MultipartRequest(
+    'POST',
+    Uri.parse('http://<votre-ip>:8000/api/detect/'),
+  );
+  request.files.add(await http.MultipartFile.fromPath('image', imageFile.path));
+  var response = await request.send();
+
+  if (response.statusCode == 200) {
+    final respStr = await response.stream.bytesToString();
+    print('Résultat : \$respStr');
+  } else {
+    print('Erreur : \${response.statusCode}');
+  }
+}
+    </code></pre>
+<h1>Classes predite par catégorisées</h1>
+
+    <h2>Personnes</h2>
+    <p>personne</p>
+
+    <h2>Véhicules</h2>
+    <p>bicyclette, voiture, moto, avion, bus, train, camion, bateau</p>
+
+    <h2>Infrastructures routières</h2>
+    <p>feu de circulation, bouche d'incendie, panneau stop, parcmètre, banc</p>
+
+    <h2>Animaux</h2>
+    <p>oiseau, chat, chien, cheval, mouton, vache, éléphant, ours, zèbre, girafe</p>
+
+    <h2>Objets portés</h2>
+    <p>sac à dos, parapluie, sac à main, cravate, valise</p>
+
+    <h2>Articles de sport et loisirs</h2>
+    <p>frisbee, skis, snowboard, ballon de sport, cerf-volant, batte de baseball, gant de baseball, planche à roulettes, planche de surf, raquette de tennis</p>
+
+    <h2>Ustensiles de table</h2>
+    <p>bouteille, verre à vin, tasse, fourchette, couteau, cuillère, bol</p>
+
+    <h2>Nourriture</h2>
+    <p>banane, pomme, sandwich, orange, brocoli, carotte, hot-dog, pizza, beignet, gâteau</p>
+
+    <h2>Meubles</h2>
+    <p>chaise, canapé, plante en pot, lit, table à manger, toilettes</p>
+
+    <h2>Électronique</h2>
+    <p>télévision, ordinateur portable, souris, télécommande, clavier, téléphone portable</p>
+
+    <h2>Électroménager</h2>
+    <p>micro-ondes, four, grille-pain, évier, réfrigérateur</p>
+
+    <h2>Objets divers</h2>
+    <p>livre, horloge, vase, ciseaux, ours en peluche, sèche-cheveux, brosse à dents</p>
+</body>
+</html>

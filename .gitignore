@@ -1,0 +1,59 @@
+# Environnement virtuel
+venv/
+env/
+ENV/
+.venv/
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.log
+
+# Fichiers temporaires
+*.swp
+*.bak
+*.tmp
+
+# Bases de données SQLite
+*.sqlite3
+db.sqlite3
+
+# Configurations locales / variables d'environnement
+.env
+.env.*
+
+# Dossiers générés automatiquement
+/staticfiles/
+media/
+node_modules/
+dist/
+build/
+
+# Fichiers de test
+coverage/
+htmlcov/
+.tox/
+.nox/
+
+# Pytest / nose / unittest
+.pytest_cache/
+.cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+
+# Django stuff
+*.pot
+*.mo
+*.pt
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
